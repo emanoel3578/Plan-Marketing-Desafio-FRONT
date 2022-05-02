@@ -7,6 +7,9 @@ import { RouterLink, RouterView } from "vue-router";
     <div>
       <LoaderComponent />
     </div>
+    <div v-if="errors">
+      <ErrorModalComponent :errors="errors" @closeErrorModal="closeErrorModal"/>
+    </div>
     <div class="flex w-screen h-screen">
       <aside
         class="ml-[-100%] z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]"
@@ -89,12 +92,24 @@ import { RouterLink, RouterView } from "vue-router";
 
 <script>
 import LoaderComponent from './components/LoaderComponent.vue';
+import ErrorModalComponent from './components/ErrorModalComponent.vue';
 export default {
   components: {
-    LoaderComponent
+    LoaderComponent,
+    ErrorModalComponent
+  },
+  computed: {
+    errors() {
+      return this.$store.getters.getErrorState;
+    }
   },
   mounted() {
     this.$store.dispatch("setAllProducts");
   },
+  methods: {
+    closeErrorModal() {
+      this.$store.commit("setError", false);
+    }
+  }
 };
 </script>

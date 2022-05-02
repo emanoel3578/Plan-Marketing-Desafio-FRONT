@@ -1,4 +1,7 @@
 <template>
+  <div v-if="showEditModal">
+    <EditModalComponent :product="product" @closeEditModal="editProduct"/>
+  </div>
   <div class="sticky z-10 w-full top-0 h-16 border-b bg-white lg:py-2.5">
     <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
       <h5 hidden class="text-2xl text-gray-600 font-medium lg:block">
@@ -148,13 +151,19 @@
 </template>
 
 <script>
+import EditModalComponent from '../components/EditModalComponent.vue'
 export default {
+  components: {
+    EditModalComponent
+  },
   name: "HomeView",
   data() {
     return {
       currentPage: 1,
       offset: 0,
       itemsPerPage: 10,
+      product:[],
+      showEditModal: false,
     };
   },
   computed: {
@@ -176,7 +185,8 @@ export default {
       }
     },
     editProduct(index) {
-      console.log(this.allProducts[index]);
+      this.showEditModal = !this.showEditModal;
+      this.product = this.allProducts[index];
     },
     deleteProduct(id) {
       console.log(id);

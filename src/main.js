@@ -14,6 +14,7 @@ const store = createStore({
   state: {
     loading: false,
     allProducts: [],
+    error: "",
   },
 
   mutations: {
@@ -23,11 +24,15 @@ const store = createStore({
     setProducts(state, payload) {
       state.allProducts = payload;
     },
+    setError(state, payload) {
+      state.error = payload;
+    },
   },
 
   getters: {
     getCurrentProducts: (state) => state.allProducts,
     getLoadingState: (state) => state.loading,
+    getErrorState: (state) => state.error,
   },
 
   actions: {
@@ -48,6 +53,20 @@ const store = createStore({
         state.commit("setProducts", response.data.data);
         state.commit("setLoadingState");
       });
+    },
+    async updateProduct(state, product) {
+      state.commit("setLoadingState");
+      await axios
+        .patch(url + `editar`, { product })
+        .then(() => {
+          state.commit("setLoadingState");
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          state.commit("setLoadingState");
+          state.commit("setError", error.response.data.errors);
+          state.dispatch("setAllProducts");
+        });
     },
   },
 });
