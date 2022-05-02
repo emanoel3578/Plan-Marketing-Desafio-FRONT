@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-center absolute items-center z-50 w-full inset-0 bg-black/75"
+    class="flex justify-center absolute items-center z-20 w-full inset-0 bg-black/75"
   >
     <div
       class="relative z-10 flex flex-col items-start justify-center p-10 bg-white shadow-2xl rounded-xl"
@@ -77,7 +77,7 @@
         <div class="relative">
           <span
             @click="updateProduct"
-            class="inline-block w-full px-5 py-4 text-xl font-medium text-center text-white transition duration-200 bg-blue-600 rounded-lg hover:bg-blue-500"
+            class="cursor-pointer inline-block w-full px-5 py-4 text-xl font-medium text-center text-white transition duration-200 bg-blue-600 rounded-lg hover:bg-blue-500"
           >
             Salvar mudanças
           </span>

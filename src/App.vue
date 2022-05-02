@@ -8,7 +8,13 @@ import { RouterLink, RouterView } from "vue-router";
       <LoaderComponent />
     </div>
     <div v-if="errors">
-      <ErrorModalComponent :errors="errors" @closeErrorModal="closeErrorModal"/>
+      <ErrorModalComponent
+        :errors="errors"
+        @closeErrorModal="closeErrorModal"
+      />
+    </div>
+    <div v-if="success">
+      <SuccessModalComponent :messages="success" />
     </div>
     <div class="flex w-screen h-screen">
       <aside
@@ -30,13 +36,14 @@ import { RouterLink, RouterView } from "vue-router";
           </div>
 
           <ul class="space-y-2 tracking-wide mt-8">
-            <li>
+            <li @click="setTab">
               <RouterLink
-                to="/home"
+                to="/listar"
                 aria-label="dashboard"
-                class="relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-gradient-to-r from-sky-600 to-cyan-400"
+                class="relative px-4 py-3 flex items-center rounded-xl"
+                :class="[isList ? activeClass : '']"
               >
-                <svg class="-ml-1 h-6 w-6" viewBox="0 0 24 24" fill="none">
+                <svg class="-ml-1 h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
                   <path
                     d="M6 8a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8ZM6 15a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-1Z"
                     class="fill-current text-cyan-400 dark:fill-slate-600"
@@ -50,13 +57,16 @@ import { RouterLink, RouterView } from "vue-router";
                     class="fill-current group-hover:text-sky-300"
                   ></path>
                 </svg>
-                <span class="-mr-1 font-medium">Dashboard</span>
+                <span id="listar" class="font-medium group-hover:text-gray-700"
+                  >Listar Produtos</span
+                >
               </RouterLink>
             </li>
-            <li>
+            <li @click="setTab">
               <RouterLink
-                to="/about"
+                to="/criar"
                 class="px-4 py-3 flex items-center space-x-4 rounded-md text-gray-600 group"
+                :class="[isCreate ? activeClass : '']"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +85,7 @@ import { RouterLink, RouterView } from "vue-router";
                     d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z"
                   />
                 </svg>
-                <span class="group-hover:text-gray-700">
+                <span id="criar" class="font-medium group-hover:text-gray-700">
                   Adicionar Produtos
                 </span>
               </RouterLink>
@@ -91,25 +101,43 @@ import { RouterLink, RouterView } from "vue-router";
 </template>
 
 <script>
-import LoaderComponent from './components/LoaderComponent.vue';
-import ErrorModalComponent from './components/ErrorModalComponent.vue';
+import LoaderComponent from "./components/LoaderComponent.vue";
+import ErrorModalComponent from "./components/ErrorModalComponent.vue";
+import SuccessModalComponent from "./components/SuccessModalComponent.vue";
 export default {
   components: {
     LoaderComponent,
-    ErrorModalComponent
+    ErrorModalComponent,
+    SuccessModalComponent,
+  },
+  data() {
+    return {
+      activeClass: "text-white bg-gradient-to-r from-sky-600 to-cyan-400",
+      isList: true,
+      isCreate: false,
+    };
   },
   computed: {
     errors() {
       return this.$store.getters.getErrorState;
-    }
-  },
-  mounted() {
-    this.$store.dispatch("setAllProducts");
+    },
+    success() {
+      return this.$store.getters.getSuccessState;
+    },
   },
   methods: {
     closeErrorModal() {
       this.$store.commit("setError", false);
-    }
-  }
+    },
+    setTab(event) {
+      if (event.target.id === "listar") {
+        this.isList = true;
+        this.isCreate = false;
+      } else {
+        this.isList = false;
+        this.isCreate = true;
+      }
+    },
+  },
 };
 </script>

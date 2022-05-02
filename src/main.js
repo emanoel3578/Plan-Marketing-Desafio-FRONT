@@ -15,6 +15,7 @@ const store = createStore({
     loading: false,
     allProducts: [],
     error: "",
+    success: "",
   },
 
   mutations: {
@@ -27,12 +28,16 @@ const store = createStore({
     setError(state, payload) {
       state.error = payload;
     },
+    setSuccess(state, payload) {
+      state.success = payload;
+    }
   },
 
   getters: {
     getCurrentProducts: (state) => state.allProducts,
     getLoadingState: (state) => state.loading,
     getErrorState: (state) => state.error,
+    getSuccessState: (state) => state.success,
   },
 
   actions: {
@@ -54,6 +59,7 @@ const store = createStore({
         .then((response) => {
           state.commit("setProducts", response.data.data);
           state.commit("setLoadingState");
+          state.commit("setSuccess", response.data.message)
         })
         .catch((error) => {
           state.commit("setLoadingState");
@@ -64,8 +70,9 @@ const store = createStore({
       state.commit("setLoadingState");
       await axios
         .patch(url + `editar`, { product })
-        .then(() => {
+        .then((response) => {
           state.commit("setLoadingState");
+          state.commit("setSuccess", response.data.message);
         })
         .catch((error) => {
           state.commit("setLoadingState");
@@ -77,9 +84,24 @@ const store = createStore({
       state.commit("setLoadingState");
       await axios
         .delete(url + `deletar`, { params: { id: id } })
-        .then(() => {
+        .then((response) => {
           state.commit("setLoadingState");
           state.dispatch("setAllProducts");
+          state.commit("setSuccess", response.data.message)
+        })
+        .catch((error) => {
+          state.commit("setLoadingState");
+          state.commit("setError", error.response.data.errors);
+          state.dispatch("setAllProducts");
+        });
+    },
+    async createProduct(state, product) {
+      state.commit("setLoadingState");
+      await axios
+        .post(url + `criar`, { product})
+        .then((response) => {
+          state.commit("setLoadingState");
+          state.commit("setSuccess", response.data.message)
         })
         .catch((error) => {
           state.commit("setLoadingState");

@@ -11,7 +11,7 @@
   <div class="sticky z-10 w-full top-0 h-16 border-b bg-white lg:py-2.5">
     <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
       <h5 hidden class="text-2xl text-gray-600 font-medium lg:block">
-        Dashboard
+        Lista de produtos
       </h5>
     </div>
   </div>
@@ -27,29 +27,29 @@
             <table
               class="w-full divide-y left-0 top-10 divide-gray-700 text-center"
             >
-              <thead class="bg-gray-700">
+              <thead class="bg-sky-600">
                 <tr>
                   <th
                     scope="col"
-                    class="py-3 px-6 text-xs font-medium tracking-wider text-gray-400 uppercase"
+                    class="py-3 px-6 text-xs font-medium tracking-wider text-white uppercase"
                   >
                     Nome do produto
                   </th>
                   <th
                     scope="col"
-                    class="py-3 px-6 text-xs font-medium tracking-wider text-gray-400 uppercase"
+                    class="py-3 px-6 text-xs font-medium tracking-wider text-white uppercase"
                   >
                     Descrição
                   </th>
                   <th
                     scope="col"
-                    class="py-3 px-6 text-xs font-medium tracking-wider text-gray-400 uppercase"
+                    class="py-3 px-6 text-xs font-medium tracking-wider text-white uppercase"
                   >
                     Tensão
                   </th>
                   <th
                     scope="col"
-                    class="py-3 px-6 text-xs font-medium tracking-wider text-gray-400 uppercase"
+                    class="py-3 px-6 text-xs font-medium tracking-wider text-white uppercase"
                   >
                     Marca
                   </th>
@@ -61,7 +61,7 @@
                   </th>
                 </tr>
               </thead>
-              <tbody class="bg-white divide-y divide-gray-700 bg-gray-800">
+              <tbody class="bg-white divide-y divide-gray-700 bg-sky-900">
                 <tr
                   v-for="(product, index) in allProducts"
                   :key="product.id"
@@ -107,7 +107,7 @@
               </tbody>
             </table>
             <div
-              class="flex justify-end items-center gap-4 px-4 py-3 bg-gray-800 text-blue-400"
+              class="flex justify-end items-center gap-4 px-4 py-3 bg-sky-900 text-black"
             >
               <div
                 @click="previousPage"
@@ -128,7 +128,7 @@
                   />
                 </svg>
               </div>
-              <div>{{ currentPage }}</div>
+              <div class="text-white">{{ currentPage }}</div>
               <div
                 @click="nextPage"
                 class="rounded-full bg-gray-200 p-1 cursor-pointer"
@@ -180,6 +180,9 @@ export default {
     allProducts() {
       return this.$store.getters.getCurrentProducts;
     },
+  },
+  mounted() {
+    this.$store.dispatch("setAllProducts");
   },
   methods: {
     nextPage() {
