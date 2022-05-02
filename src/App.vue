@@ -69,7 +69,9 @@ import { RouterLink, RouterView } from "vue-router";
                     d="M6 12a2 2 0 012-2h8a2 2 0 012 2v2a2 2 0 01-2 2H2h2a2 2 0 002-2v-2z"
                   />
                 </svg>
-                <span class="group-hover:text-gray-700">Adicionar Produtos</span>
+                <span class="group-hover:text-gray-700">
+                  Adicionar Produtos
+                </span>
               </RouterLink>
             </li>
           </ul>
@@ -81,3 +83,11 @@ import { RouterLink, RouterView } from "vue-router";
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  mounted() {
+    this.$store.dispatch("setAllProducts");
+  },
+};
+</script>
