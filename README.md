@@ -4,4 +4,4 @@
 # Comandos para execução do container do FRONT:
 <p> docker compose up -d  </p>
 <p> docker exec -it my_frontend /bin/bash </p>
-<p> npm run dev </p>
+<p> npm install && npm run dev </p>
