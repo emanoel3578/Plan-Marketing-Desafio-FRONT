@@ -7,7 +7,10 @@
     </div>
   </div>
 
-  <div v-if="allProducts" class="relative flex items-center justify-center px-10 top-10">
+  <div
+    v-if="allProducts"
+    class="relative flex items-center justify-center px-10 top-10"
+  >
     <div class="flex flex-col min-w-full">
       <div class="overflow-x-auto shadow-md sm:rounded-lg">
         <div class="inline-block min-w-full align-middle">
@@ -81,7 +84,10 @@
             <div
               class="flex justify-end items-center gap-4 px-4 py-3 bg-gray-800 text-blue-400"
             >
-              <div class="rounded-full bg-gray-200 p-1 cursor-pointer">
+              <div
+                @click="previousPage"
+                class="rounded-full bg-gray-200 p-1 cursor-pointer"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-6 w-6"
@@ -97,8 +103,11 @@
                   />
                 </svg>
               </div>
-              <div>1</div>
-              <div class="rounded-full bg-gray-200 p-1 cursor-pointer">
+              <div>{{ currentPage }}</div>
+              <div
+                @click="nextPage"
+                class="rounded-full bg-gray-200 p-1 cursor-pointer"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-6 w-6"
@@ -126,11 +135,29 @@
 export default {
   name: "HomeView",
   data() {
-    return {}
+    return {
+      currentPage: 1,
+      offset: 0,
+      itemsPerPage: 10,
+    };
   },
   computed: {
     allProducts() {
       return this.$store.getters.getCurrentProducts;
+    },
+  },
+  methods: {
+    nextPage() {
+      this.currentPage = this.currentPage + 1;
+      this.offset = (this.currentPage - 1) * this.itemsPerPage + 1;
+      this.$store.dispatch("changePage", this.offset);
+    },
+    previousPage() {
+      if (this.currentPage != 1) {
+        this.currentPage = this.currentPage - 1;
+        this.offset = (this.currentPage - 1) * this.itemsPerPage + 1;
+        this.$store.dispatch("changePage", this.offset);
+      }
     },
   },
 };
