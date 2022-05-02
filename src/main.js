@@ -5,7 +5,7 @@ import App from "./App.vue";
 import router from "./router";
 import "./index.css";
 
-const url = "http://127.0.0.1:8000/api/produtos/";
+const url = "http://127.0.0.1:8001/api/produtos/";
 
 const offset = 0;
 const itemsPerPage = 10;
