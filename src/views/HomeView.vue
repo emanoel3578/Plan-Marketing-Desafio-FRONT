@@ -1,5 +1,3 @@
-<script></script>
-
 <template>
   <div class="sticky z-10 w-full top-0 h-16 border-b bg-white lg:py-2.5">
     <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
@@ -119,3 +117,15 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "HomeView",
+  data() {},
+  computed: {
+    allProducts() {
+      return this.$store.getters.getCurrentProducts;
+    },
+  },
+};
+</script>
