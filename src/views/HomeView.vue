@@ -7,7 +7,10 @@
     </div>
   </div>
 
-  <div v-if="allProducts" class="relative flex items-center justify-center px-10 top-10">
+  <div
+    v-if="allProducts"
+    class="relative flex items-center justify-center px-10 top-10"
+  >
     <div class="flex flex-col min-w-full">
       <div class="overflow-x-auto shadow-md sm:rounded-lg">
         <div class="inline-block min-w-full align-middle">
@@ -44,11 +47,14 @@
                   <th scope="col">
                     <span class="sr-only">Edit</span>
                   </th>
+                  <th scope="col">
+                    <span class="sr-only">Delete</span>
+                  </th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-700 bg-gray-800">
                 <tr
-                  v-for="product in allProducts"
+                  v-for="(product, index) in allProducts"
                   :key="product.id"
                   class="hover:bg-gray-700"
                 >
@@ -73,7 +79,20 @@
                   <td
                     class="py-3 px-2 text-sm font-medium text-center whitespace-nowrap"
                   >
-                    <span class="text-blue-500 hover:underline">Edit</span>
+                    <span
+                      @click="editProduct(index)"
+                      class="text-blue-500 hover:underline cursor-pointer"
+                      >Edit</span
+                    >
+                  </td>
+                  <td
+                    class="py-3 px-2 text-sm font-medium text-center whitespace-nowrap"
+                  >
+                    <span
+                      @click="deleteProduct(product.id)"
+                      class="text-red-400 hover:underline cursor-pointer"
+                      >Apagar</span
+                    >
                   </td>
                 </tr>
               </tbody>
@@ -81,7 +100,10 @@
             <div
               class="flex justify-end items-center gap-4 px-4 py-3 bg-gray-800 text-blue-400"
             >
-              <div class="rounded-full bg-gray-200 p-1 cursor-pointer">
+              <div
+                @click="previousPage"
+                class="rounded-full bg-gray-200 p-1 cursor-pointer"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-6 w-6"
@@ -97,8 +119,11 @@
                   />
                 </svg>
               </div>
-              <div>1</div>
-              <div class="rounded-full bg-gray-200 p-1 cursor-pointer">
+              <div>{{ currentPage }}</div>
+              <div
+                @click="nextPage"
+                class="rounded-full bg-gray-200 p-1 cursor-pointer"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   class="h-6 w-6"
@@ -126,12 +151,36 @@
 export default {
   name: "HomeView",
   data() {
-    return {}
+    return {
+      currentPage: 1,
+      offset: 0,
+      itemsPerPage: 10,
+    };
   },
   computed: {
     allProducts() {
       return this.$store.getters.getCurrentProducts;
     },
+  },
+  methods: {
+    nextPage() {
+      this.currentPage = this.currentPage + 1;
+      this.offset = (this.currentPage - 1) * this.itemsPerPage + 1;
+      this.$store.dispatch("changePage", this.offset);
+    },
+    previousPage() {
+      if (this.currentPage != 1) {
+        this.currentPage = this.currentPage - 1;
+        this.offset = (this.currentPage - 1) * this.itemsPerPage + 1;
+        this.$store.dispatch("changePage", this.offset);
+      }
+    },
+    editProduct(index) {
+      console.log(this.allProducts[index]);
+    },
+    deleteProduct(id) {
+      console.log(id);
+    }
   },
 };
 </script>

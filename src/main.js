@@ -5,8 +5,10 @@ import App from "./App.vue";
 import router from "./router";
 import "./index.css";
 
-const url =
-  "http://127.0.0.1:8000/api/produtos/listar?itemsPerPage=10&offset=0";
+const url = "http://127.0.0.1:8000/api/produtos/";
+
+const offset = 0;
+const itemsPerPage = 10;
 
 const store = createStore({
   state: {
@@ -31,7 +33,18 @@ const store = createStore({
   actions: {
     async setAllProducts(state) {
       state.commit("setLoadingState");
-      await axios(url).then((response) => {
+      await axios(
+        url + `listar?itemsPerPage=${itemsPerPage}&offset=${offset}`
+      ).then((response) => {
+        state.commit("setProducts", response.data.data);
+        state.commit("setLoadingState");
+      });
+    },
+    async changePage(state, offset) {
+      state.commit("setLoadingState");
+      await axios(
+        url + `listar?itemsPerPage=${itemsPerPage}&offset=${offset}`
+      ).then((response) => {
         state.commit("setProducts", response.data.data);
         state.commit("setLoadingState");
       });
