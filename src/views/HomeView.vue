@@ -7,7 +7,7 @@
     </div>
   </div>
 
-  <div class="relative flex items-center justify-center px-10 top-10">
+  <div v-if="allProducts" class="relative flex items-center justify-center px-10 top-10">
     <div class="flex flex-col min-w-full">
       <div class="overflow-x-auto shadow-md sm:rounded-lg">
         <div class="inline-block min-w-full align-middle">
@@ -47,24 +47,28 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-700 bg-gray-800">
-                <tr class="hover:bg-gray-700">
+                <tr
+                  v-for="product in allProducts"
+                  :key="product.id"
+                  class="hover:bg-gray-700"
+                >
                   <td
                     class="py-3 px-2 text-sm font-medium text-white whitespace-nowrap"
                   >
-                    Geladeira Brastemp 300L
+                    {{ product.name }}
                   </td>
                   <td class="py-3 px-2 text-sm font-medium text-white">
-                    Geladeria de 300L, Branca de 2 portas
+                    {{ product.description }}
                   </td>
                   <td
                     class="py-3 px-2 text-sm font-medium whitespace-nowrap text-white"
                   >
-                    220V
+                    {{ product.tension }}
                   </td>
                   <td
                     class="py-3 px-2 text-sm font-medium whitespace-nowrap text-white"
                   >
-                    Brastemp
+                    {{ product.brand }}
                   </td>
                   <td
                     class="py-3 px-2 text-sm font-medium text-center whitespace-nowrap"
@@ -121,7 +125,9 @@
 <script>
 export default {
   name: "HomeView",
-  data() {},
+  data() {
+    return {}
+  },
   computed: {
     allProducts() {
       return this.$store.getters.getCurrentProducts;

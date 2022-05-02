@@ -4,6 +4,9 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
   <div>
+    <div>
+      <LoaderComponent />
+    </div>
     <div class="flex w-screen h-screen">
       <aside
         class="ml-[-100%] z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]"
@@ -85,7 +88,11 @@ import { RouterLink, RouterView } from "vue-router";
 </template>
 
 <script>
+import LoaderComponent from './components/LoaderComponent.vue';
 export default {
+  components: {
+    LoaderComponent
+  },
   mounted() {
     this.$store.dispatch("setAllProducts");
   },

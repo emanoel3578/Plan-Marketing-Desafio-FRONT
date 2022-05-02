@@ -10,10 +10,14 @@ const url =
 
 const store = createStore({
   state: {
-    allProducts: ["Teste", "Teste2"],
+    loading: false,
+    allProducts: [],
   },
 
   mutations: {
+    setLoadingState(state) {
+      state.loading = !state.loading;
+    },
     setProducts(state, payload) {
       state.allProducts = payload;
     },
@@ -21,12 +25,15 @@ const store = createStore({
 
   getters: {
     getCurrentProducts: (state) => state.allProducts,
+    getLoadingState: (state) => state.loading,
   },
 
   actions: {
     async setAllProducts(state) {
+      state.commit("setLoadingState");
       await axios(url).then((response) => {
         state.commit("setProducts", response.data.data);
+        state.commit("setLoadingState");
       });
     },
   },
