@@ -47,11 +47,14 @@
                   <th scope="col">
                     <span class="sr-only">Edit</span>
                   </th>
+                  <th scope="col">
+                    <span class="sr-only">Delete</span>
+                  </th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-700 bg-gray-800">
                 <tr
-                  v-for="product in allProducts"
+                  v-for="(product, index) in allProducts"
                   :key="product.id"
                   class="hover:bg-gray-700"
                 >
@@ -76,7 +79,20 @@
                   <td
                     class="py-3 px-2 text-sm font-medium text-center whitespace-nowrap"
                   >
-                    <span class="text-blue-500 hover:underline">Edit</span>
+                    <span
+                      @click="editProduct(index)"
+                      class="text-blue-500 hover:underline cursor-pointer"
+                      >Edit</span
+                    >
+                  </td>
+                  <td
+                    class="py-3 px-2 text-sm font-medium text-center whitespace-nowrap"
+                  >
+                    <span
+                      @click="deleteProduct(product.id)"
+                      class="text-red-400 hover:underline cursor-pointer"
+                      >Apagar</span
+                    >
                   </td>
                 </tr>
               </tbody>
@@ -159,6 +175,12 @@ export default {
         this.$store.dispatch("changePage", this.offset);
       }
     },
+    editProduct(index) {
+      console.log(this.allProducts[index]);
+    },
+    deleteProduct(id) {
+      console.log(id);
+    }
   },
 };
 </script>
