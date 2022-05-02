@@ -38,21 +38,27 @@ const store = createStore({
   actions: {
     async setAllProducts(state) {
       state.commit("setLoadingState");
-      await axios(
-        url + `listar?itemsPerPage=${itemsPerPage}&offset=${offset}`
-      ).then((response) => {
-        state.commit("setProducts", response.data.data);
-        state.commit("setLoadingState");
-      });
+      await axios(url + `listar?itemsPerPage=${itemsPerPage}&offset=${offset}`)
+        .then((response) => {
+          state.commit("setProducts", response.data.data);
+          state.commit("setLoadingState");
+        })
+        .catch((error) => {
+          state.commit("setLoadingState");
+          state.commit("setError", error.response.data.errors);
+        });
     },
     async changePage(state, offset) {
       state.commit("setLoadingState");
-      await axios(
-        url + `listar?itemsPerPage=${itemsPerPage}&offset=${offset}`
-      ).then((response) => {
-        state.commit("setProducts", response.data.data);
-        state.commit("setLoadingState");
-      });
+      await axios(url + `listar?itemsPerPage=${itemsPerPage}&offset=${offset}`)
+        .then((response) => {
+          state.commit("setProducts", response.data.data);
+          state.commit("setLoadingState");
+        })
+        .catch((error) => {
+          state.commit("setLoadingState");
+          state.commit("setError", error.response.data.errors);
+        });
     },
     async updateProduct(state, product) {
       state.commit("setLoadingState");
@@ -62,7 +68,20 @@ const store = createStore({
           state.commit("setLoadingState");
         })
         .catch((error) => {
-          console.log(error.response.data);
+          state.commit("setLoadingState");
+          state.commit("setError", error.response.data.errors);
+          state.dispatch("setAllProducts");
+        });
+    },
+    async deleteProduct(state, id) {
+      state.commit("setLoadingState");
+      await axios
+        .delete(url + `deletar`, { params: { id: id } })
+        .then(() => {
+          state.commit("setLoadingState");
+          state.dispatch("setAllProducts");
+        })
+        .catch((error) => {
           state.commit("setLoadingState");
           state.commit("setError", error.response.data.errors);
           state.dispatch("setAllProducts");

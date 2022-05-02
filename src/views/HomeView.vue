@@ -1,6 +1,12 @@
 <template>
+  <div v-if="showDeleteModal">
+    <DeleteModalComponent
+      :idProduct="idProductDelete"
+      @closeDeleteModal="deleteProduct"
+    />
+  </div>
   <div v-if="showEditModal">
-    <EditModalComponent :product="product" @closeEditModal="editProduct"/>
+    <EditModalComponent :product="product" @closeEditModal="editProduct" />
   </div>
   <div class="sticky z-10 w-full top-0 h-16 border-b bg-white lg:py-2.5">
     <div class="px-6 flex items-center justify-between space-x-4 2xl:container">
@@ -151,10 +157,12 @@
 </template>
 
 <script>
-import EditModalComponent from '../components/EditModalComponent.vue'
+import EditModalComponent from "../components/EditModalComponent.vue";
+import DeleteModalComponent from "../components/DeleteModalComponent.vue"
 export default {
   components: {
-    EditModalComponent
+    EditModalComponent,
+    DeleteModalComponent,
   },
   name: "HomeView",
   data() {
@@ -162,8 +170,10 @@ export default {
       currentPage: 1,
       offset: 0,
       itemsPerPage: 10,
-      product:[],
+      product: [],
+      idProductDelete: '',
       showEditModal: false,
+      showDeleteModal: false,
     };
   },
   computed: {
@@ -189,8 +199,9 @@ export default {
       this.product = this.allProducts[index];
     },
     deleteProduct(id) {
-      console.log(id);
-    }
+      this.showDeleteModal = !this.showDeleteModal;
+      this.idProductDelete = id;
+    },
   },
 };
 </script>
